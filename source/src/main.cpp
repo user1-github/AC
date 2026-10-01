@@ -247,9 +247,9 @@ void writepngchunk(stream *f, const char *type, const void *data = NULL, uint le
     if(data) f->write(data, len);
 
     uint crc = crc32(0, Z_NULL, 0);
-    crc = ~crc32(crc, (const Bytef *)type, 4);
-    if(data) loopi(len) enet_crc32_inc(&crc, ((const uchar *)data)[i]);
-    f->putbig<uint>(~crc);
+    crc = crc32(crc, (const Bytef *)type, 4);
+    if(data) crc = crc32(crc, data, len);
+    f->putbig<uint>(crc);
 }
 
 int save_png(const char *filename, SDL_Surface *image)
